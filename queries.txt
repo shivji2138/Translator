@@ -1,0 +1,8 @@
+CREATE DATABASE translator;
+USE translator;
+CREATE TABLE translator(
+s_no INT PRIMARY KEY AUTO_INCREMENT,
+english_word VARCHAR(45),
+tamil_word VARCHAR(45),
+hindi_word VARCHAR(45)
+);
