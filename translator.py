@@ -8,33 +8,52 @@ conn = mysql.connector.connect(
     database="translator" 
 )
 
-# Function to add a new recipe
+# Function to add a word to the translations table
 def add_word():
-    engword = input("Enter the english word: ")
-    tamword = input("Enter the tamil word: ")
-    hindiword = input("Enter the hindi word: ")
-    
+    english = input("Enter English word:")
+    tamil =  input("Enter Tamil word:")
+    hindi = input("Enter Hindi word:")
+    bengali = input("Enter Bengali word:")
+    telugu = input("Enter Telugu word:")
+    marathi = input("Enter Marathi word:")
+    gujarati = input("Enter Gujarathi word:")
+    kannada = input("Enter Kannada word:")
+    malayalam = input("Enter Malayalam word:")
+    punjabi = input("Enter Punjabi word:")
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO translator(english_word, tamil_word, hindi_word) VALUES (%s, %s, %s)", (engword,tamword,hindiword))
+    sql = "INSERT INTO translations (english, tamil, hindi, Bengali, Telugu, Marathi, Gujarati, Kannada, Malayalam, Punjabi) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    values = (english, tamil, hindi, bengali, telugu, marathi, gujarati, kannada, malayalam, punjabi)
+    cursor.execute(sql, values)
     conn.commit()
-    print("Translation added successfully!")
+    print("Word added successfully!")
+    print()
 
-# Function to search for existing recipes by title
+# Function to search for a word in the translations table
 def search_word():
-    word = input("Enter the english word to search for: ")
+    word = input("Enter english word to search:")
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM translator WHERE english_word = %s", (word,))
-    translations = cursor.fetchone()
-    if translations:
-        print("Found Word:")
-        print(f"TAMIL: {translations[2]}")
-        print(f"HINDI: {translations[3]}")
+    sql = "SELECT * FROM translations WHERE english = %s"
+    cursor.execute(sql, (word,))
+    result = cursor.fetchone()
+    if result:
+        print("English:", result[1])
+        print("Tamil:", result[2])
+        print("Hindi:", result[3])
+        print("Bengali:", result[4])
+        print("Telugu:", result[5])
+        print("Marathi:", result[6])
+        print("Gujarati:", result[7])
+        print("Kannada:", result[8])
+        print("Malayalam:", result[9])
+        print("Punjabi:", result[10])
+        print()
     else:
-        print("No match found.")
+        print("Word not found!")
+        print()
 
 # Display menu options
 def display_menu():
-    print("Welcome to E-T&H translator") 
+    print("Welcome to Indian Languages translator") 
     print("Choose an option:")
     print("1. Translate a new word")
     print("2. Search for a word")
@@ -55,4 +74,7 @@ def display_menu():
 # Usage: Call the display_menu() function in a loop
 while True:
     if not display_menu():
-        break 
+        break
+    
+conn.close()
+
